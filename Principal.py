@@ -5,6 +5,8 @@ import time
 #importancion de las clases 
 from gato import Gato
 from pajaro import Pajaro
+from lista import Lista
+from pila import Pila
 
 #declaracion de arreglos para el almacenamieno de las mascotas
 gatos = []
