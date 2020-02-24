@@ -1,5 +1,20 @@
+#importancion del modulo de limpieza de la consola
 import os
-lectura = 0
+import time
+
+#importancion de las clases 
+from gato import Gato
+from pajaro import Pajaro
+
+#declaracion de arreglos para el almacenamieno de las mascotas
+gatos = []
+pajaros = []
+
+#declaracion de variables contenedoras del archivo de salida
+mascotas_result = " "
+edu_result = " "
+almacen_result = " "
+
 
 print(" ")
 print("----------Datos del estudiante----------")
@@ -11,9 +26,8 @@ print("|                                      |")
 print("----------------------------------------")
 print(" ")
 input("Presione enter para continuar")
-
-
 # Recibir un enter, limpiar pantalla y mostrar el menu principal
+
 def menuPrincipal():
     os.system("cls")
     print(" ")
@@ -68,7 +82,7 @@ def menuEducacion():
     print("| 0. Regresar al menu principal |")
     print("|                               |")
     print("---------------------------------")
-    print("")
+    print(" ")
     while True:
         lectura = input('Presione el numero de la accion a realizar: ')
         lectura = int(lectura)
@@ -82,4 +96,5 @@ def menuEducacion():
             print("\nIngrese una opcion valida \n")
 
 menuPrincipal()
+
 
