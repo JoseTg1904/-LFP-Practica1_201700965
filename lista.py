@@ -24,8 +24,13 @@ class Lista():
             aux.siguiente = Nodo(objeto,None)
             self.tamanyo = self.tamanyo + 1
 
-    
-            
+    def limpiar(self):
+        if self.cabeza != None:
+            self.cabeza = self.cabeza.siguiente
+            self.limpiar()
+        else:
+            self.tamanyo = 0
+            self.cabeza = None
 
            
 

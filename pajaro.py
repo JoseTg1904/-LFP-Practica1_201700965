@@ -45,6 +45,7 @@ class Pajaro(Animal):
                 return "[%s/%s/%s"%(fecha.day,fecha.month,fecha.year) + " %s:%s"%(fecha.hour,fecha.minute)+"] "+self.nombre + ", Si puedo ir a dejar el mensaje."
             else:
                 comida_necesaria = self.comidaNecesaria( energia_necesaria - self.energia )
+                self.estado = False               
                 return "[%s/%s/%s"%(fecha.day,fecha.month,fecha.year) + " %s:%s"%(fecha.hour,fecha.minute)+"] " + self.nombre + ", Estoy exhausto. Dame de comer " + comida_necesaria + "gramos para ir."
         else:
             return "[%s/%s/%s"%(fecha.day,fecha.month,fecha.year) + " %s:%s"%(fecha.hour,fecha.minute)+"] "+self.nombre+", Ya me mori."       

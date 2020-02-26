@@ -53,6 +53,7 @@ class Gato(Animal):
                 return "[%s/%s/%s"%(fecha.day,fecha.month,fecha.year) + " %s:%s"%(fecha.hour,fecha.minute)+"] "+self.nombre + ", Ya me comi al raton, ahora mi energia es: " + self.energia + " Joules."   
             else:
                 gramos_necesarios = self.energiaNecesaria(energia_consumida)
+                self.estado = False
                 return "[%s/%s/%s"%(fecha.day,fecha.month,fecha.year) + " %s:%s"%(fecha.hour,fecha.minute)+"] "+self.nombre + ", Estoy exhausto. Dame de comer " + gramos_necesarios + " gramos, para ir."
         else:
             return "[%s/%s/%s"%(fecha.day,fecha.month,fecha.year) + " %s:%s"%(fecha.hour,fecha.minute)+"] "+self.nombre + ", Ya me mori."

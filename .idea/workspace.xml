@@ -2,9 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6f761373-ba8f-40f1-9ffa-d1e61c3d3d6c" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/rSettings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Principal.py" beforeDir="false" afterPath="$PROJECT_DIR$/Principal.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gato.py" beforeDir="false" afterPath="$PROJECT_DIR$/gato.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lista.py" beforeDir="false" afterPath="$PROJECT_DIR$/lista.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pajaro.py" beforeDir="false" afterPath="$PROJECT_DIR$/pajaro.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -97,9 +99,9 @@
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
     <state x="352" y="97" key="SettingsEditor/0.0.1920.1080@0.0.1920.1080" timestamp="1582341191885" />
-    <state x="598" y="322" key="com.intellij.ide.util.TipDialog" timestamp="1582475493057">
+    <state x="598" y="322" key="com.intellij.ide.util.TipDialog" timestamp="1582687674347">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state x="598" y="322" key="com.intellij.ide.util.TipDialog/0.0.1920.1080@0.0.1920.1080" timestamp="1582475493057" />
+    <state x="598" y="322" key="com.intellij.ide.util.TipDialog/0.0.1920.1080@0.0.1920.1080" timestamp="1582687674347" />
   </component>
 </project>
