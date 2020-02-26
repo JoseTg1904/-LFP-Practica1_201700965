@@ -16,7 +16,6 @@ pajaros = []
 palabras = []
 
 #declaracion de variables contenedoras del archivo de salida
-mascotas_result = " "
 edu_result = " "
 
 #declaracion de las estructuras de datos
@@ -37,7 +36,132 @@ input("Presione enter para continuar")
 # Recibir un enter, limpiar pantalla y mostrar el menu principal
 
 def mascotas():
-    pass
+
+    #guardado de la ruta dl archivo de mascotas
+    path = input("\nIngrese la ruta del archivo: ")
+
+    #vaciado del arreglo de mascotas y el contenido del archivo de salida
+    mascotas = []
+    mascotas_result = " "
+
+    #apertura y lectura del contenido del archivo de las instrucciones 
+    archivo_mascotas = open(path,"r")
+    contenido = archivo_mascotas.read()
+
+    #division del archivo en lineas
+    division = contenido.split("\n")
+
+    #recorrido de las lineas del archivo
+    for linea in division:
+        #division del archivo en tipo de instruccion(0) y contenido(1) 
+        instruccion = linea.split(":")
+        fecha = datetime.datetime.now()
+
+        if instruccion[0] == "Crear_Pajaro":
+            #eliminacion del "" en el nombre de la mascota
+            nombre = instruccion[1].strip('"')
+            
+            #creacion del objeto
+            p1 = Pajaro(nombre,1,True,0,0)
+
+            #agregando el objeto creado al arreglo
+            mascotas.append(p1)
+            
+            #generacion del reporte
+            if mascotas_result != " ":
+                mascotas_result = mascotas_result + "[%s/%s/%s"%(fecha.day,fecha.month,fecha.year) + " %s:%s"%(fecha.hour,fecha.minute)+"] Se creo el pajaro " + nombre +"\n"
+            else:
+                mascotas_result = "[%s/%s/%s"%(fecha.day,fecha.month,fecha.year) + " %s:%s"%(fecha.hour,fecha.minute)+"] Se creo el pajaro " + nombre + "\n"
+        elif instruccion[0] == "Puede_Entregar_Mensaje":
+            ar1 = instruccion[1].split(",")
+            nick = ar1[0].strip('"')
+            for animal in mascotas:
+                #validando el tipo de objeto que se encuentra en el arreglo
+                if type(animal) == Pajaro:
+                    if animal.nombre == nick:
+                        if mascotas_result != " ":
+                            mascotas_result = mascotas_result + animal.validarMensaje( int(ar1[1]) , int(ar1[2])) + "\n" 
+                        else:
+                            mascotas_result = animal.validarMensaje( int(ar1[1]) , int(ar1[2])) + "\n" 
+        elif instruccion[0] == "Enviar_Mensaje":
+            print 
+            ar1 = instruccion[1].split(",")
+            nick = ar1[0].strip('"')
+            for animal in mascotas:
+                if type(animal) == Pajaro:
+                    if animal.nombre == nick:
+                        if mascotas_result != " ":
+                            mascotas_result = mascotas_result + animal.enviarMensaje( int(ar1[1]) , int(ar1[2])) + "\n" 
+                        else:
+                            mascotas_result = animal.enviarMensaje( int(ar1[1]) , int(ar1[2])) + "\n" 
+        elif instruccion[0] == "Crear_Gato":
+            nombre = instruccion[1].strip('"')
+            g1 = Gato(nombre,1,True,0,0)
+            mascotas.append(g1)
+
+            if mascotas_result != " ":
+                mascotas_result = mascotas_result + "[%s/%s/%s"%(fecha.day,fecha.month,fecha.year) + " %s:%s"%(fecha.hour,fecha.minute)+"] Se creo el gato " + nombre +"\n"
+            else:
+                mascotas_result = "[%s/%s/%s"%(fecha.day,fecha.month,fecha.year) + " %s:%s"%(fecha.hour,fecha.minute)+"] Se creo el gato " + nombre + "\n"
+        elif instruccion[0] == "Conviene_Comer_Raton":
+            ar1 = instruccion[1].split(",")
+            nick = ar1[0].strip('"')
+            for animal in mascotas:
+                if type(animal) == Gato:
+                    if animal.nombre == nick:
+                        if mascotas_result != " ":
+                            mascotas_result = mascotas_result + animal.validarComerRaton( int(ar1[1]) , int(ar1[2]) , int(ar1[3]) ) + "\n" 
+                        else:
+                            mascotas_result = animal.validarComerRaton( int(ar1[1]) , int(ar1[2]) , int(ar1[3]) ) + "\n" 
+        elif instruccion[0] == "Enviar_Comer_Raton":
+            ar1 = instruccion[1].split(",")
+            nick = ar1[0].strip('"')
+            for animal in mascotas:
+                if type(animal) == Gato:
+                    if animal.nombre == nick:
+                        if mascotas_result != " ":
+                            mascotas_result = mascotas_result + animal.cazarRaton( int(ar1[1]) , int(ar1[2]) , int(ar1[3]) ) + "\n" 
+                        else:
+                            mascotas_result = animal.cazarRaton( int(ar1[1]) , int(ar1[2]) , int(ar1[3]) ) + "\n" 
+        elif instruccion[0] == "Dar_De_Comer":
+            ar1 = instruccion[1].split(",")
+            nick = ar1[0].strip('"')
+            for animal in mascotas:
+                if animal.nombre == nick:
+                    if mascotas_result != " ":
+                        mascotas_result = mascotas_result +  animal.comer(int(ar1[1])) + "\n" 
+                    else:
+                        mascotas_result = mascotas_result +  animal.comer(int(ar1[1])) + "\n" 
+        elif instruccion[0] == "Resumen_Mascota":
+            ar1 = instruccion[1].split(",")
+            nick = ar1[0].strip('"')
+            for animal in mascotas:
+                if animal.nombre == nick:
+                    if mascotas_result != " ":
+                        mascotas_result = mascotas_result +  animal.resumen() + "\n" 
+                    else:
+                        mascotas_result = mascotas_result +  animal.resumen() + "\n" 
+        elif linea == "Resumen_Global":
+            fecha = datetime.datetime.now()
+            if mascotas_result != " ":
+                mascotas_result = mascotas_result + "[%s/%s/%s"%(fecha.day,fecha.month,fecha.year) + " %s:%s"%(fecha.hour,fecha.minute)+"] " + "----------------- Resumen global -----------------\n"
+            else:
+                mascotas_result = "[%s/%s/%s"%(fecha.day,fecha.month,fecha.year) + " %s:%s"%(fecha.hour,fecha.minute)+"] " + "----------------- Resumen global -----------------"
+
+            for animal in mascotas:
+                    if mascotas_result != " ":
+                        mascotas_result = mascotas_result +  animal.resumen() + "\n" 
+                    else:
+                        mascotas_result = mascotas_result +  animal.resumen() + "\n" 
+
+            mascotas_result = mascotas_result + "[%s/%s/%s"%(fecha.day,fecha.month,fecha.year) + " %s:%s"%(fecha.hour,fecha.minute)+"] " + "--------------------------------------------------\n"
+
+    #creacion e impresion del archivo.mascotas_result
+    resultado = open("C:/Users/chepe/Desktop/archivo.mascotas_result","w")
+    resultado.write(mascotas_result)
+    resultado.close()
+    os.system("C:/Users/chepe/Desktop/archivo.mascotas_result")
+    menuPrincipal()
 
 def menuPrincipal():
     os.system("cls")
@@ -80,7 +204,7 @@ def menuEntretenimiento():
         lectura = input('Presione el numero de la accion a realizar: ')
         lectura = int(lectura)
         if lectura == 1:
-            print("carga del archivo")
+            mascotas()
         elif lectura == 0:
             menuPrincipal()
         else:
@@ -111,17 +235,19 @@ def almacenCaracteres():
 
         if instruccion[0] == "Declarar":
             #agregar las palabras a un arreglo auxiliar
-            palabras.append(instruccion[1])
+            ar1 = instruccion[1].split(",")
+            completo = ar1[0]+","+ar1[1].strip('"') 
+            palabras.append(completo)
            
             #separar el ID de la palabra y su contenido
             palabra = instruccion[1].split(",")
             
             #obtención del contenido
-            asignacion = palabra[1]
+            asignacion = palabra[1].strip('"')
 
             """agregar longitud de la palabra eliminando la longitud que presentan las "" por la forma del 
             archivo de entrada"""
-            lista.agregar(len(asignacion)-2)
+            lista.agregar(len(asignacion))
             
             #generacion del reporte
             if len(almacen_result) != 0:
@@ -166,7 +292,7 @@ def almacenCaracteres():
                         almacen_result = "[%s/%s/%s"%(fecha.day,fecha.month,fecha.year) + " %s:%s"%(fecha.hour,fecha.minute)+"] " + cadena[0] + ", Pos: " + str(contador) + "\n"
 
                 #aumento del contador de la longitud de las palabras
-                contador = contador + (len(cadena[1])-2)    
+                contador = contador + (len(cadena[1]))    
         elif instruccion[0] == "Tamanio":
             #recorrido del arreglo auxiliar
             for i in palabras:
@@ -176,9 +302,9 @@ def almacenCaracteres():
                 if instruccion[1] == identificador[0]:
                     #generacion de reporte
                     if len(almacen_result) != 0:
-                        almacen_result = almacen_result + "[%s/%s/%s"%(fecha.day,fecha.month,fecha.year) + " %s:%s"%(fecha.hour,fecha.minute)+"] " + identificador[0] + ", Tam: " + str(len(identificador[1])-2) + "\n"
+                        almacen_result = almacen_result + "[%s/%s/%s"%(fecha.day,fecha.month,fecha.year) + " %s:%s"%(fecha.hour,fecha.minute)+"] " + identificador[0] + ", Tam: " + str(len(identificador[1])) + "\n"
                     else:
-                        almacen_result = "[%s/%s/%s"%(fecha.day,fecha.month,fecha.year) + " %s:%s"%(fecha.hour,fecha.minute)+"] " + identificador[0] + ", Tam: " + str(len(identificador[1])-2) + "\n"
+                        almacen_result = "[%s/%s/%s"%(fecha.day,fecha.month,fecha.year) + " %s:%s"%(fecha.hour,fecha.minute)+"] " + identificador[0] + ", Tam: " + str(len(identificador[1])) + "\n"
         elif instruccion[0] == "Imprimir":
              #contadores para medir longitud de palabras y cantidad de palabras que se han recorrido
             contador = 0
@@ -207,7 +333,7 @@ def almacenCaracteres():
                             contador = contador + 1 
 
                 #aumento del contador de la longitud de las palabras
-                contador = contador + (len(cadena[1])-2)   
+                contador = contador + (len(cadena[1]))   
         elif instruccion[0] == "Generar_grafo":
             #inicio del codigo del grafo
             dot = "digraph G{ \n"
@@ -238,8 +364,10 @@ def almacenCaracteres():
             dot = dot + "}"
             
             #rutas del .dot y la imagen
-            path_dot = instruccion[1]+":"+instruccion[2] + "//grafo.dot"
-            path_imagen = instruccion[1]+":"+instruccion[2] + "//grafo.png"
+            parte1 = instruccion[1].strip('"')
+            parte2 = instruccion[2].strip('"')
+            path_dot = parte1 +":"+ parte2 + "//grafo.dot"
+            path_imagen = parte1 +":"+ parte2 + "//grafo.png"
             
             #escritura del .dot
             archivo_dot = open(path_dot,"w")
@@ -251,7 +379,6 @@ def almacenCaracteres():
             
             #apertura de la imagen generada
             os.system(path_imagen)
-    
     resultado = open("C:/Users/chepe/Desktop/archivo.almacen_result","w")
     resultado.write(almacen_result)
     resultado.close()
