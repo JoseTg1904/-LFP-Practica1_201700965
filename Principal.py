@@ -8,7 +8,6 @@ import time
 from gato import Gato
 from pajaro import Pajaro
 from lista import Lista
-from pila import Pila
 
 #declaracion de variables contenedoras del archivo de salida
 edu_result = " "
@@ -16,7 +15,6 @@ cadena = []
 
 #declaracion de las estructuras de datos
 lista = Lista()
-pila = Pila()
 
 
 print(" ")
@@ -39,6 +37,14 @@ def mascotas():
     #vaciado del arreglo de mascotas y el contenido del archivo de salida
     mascotas = []
     mascotas_result = " "
+
+    #validando que la extension del archivo sea la correcta
+    while True:
+        nombre,extension = os.path.splitext(path)
+        if extension == ".mascotas":
+            break
+        else:
+            path = input("\nIngrese la ruta del archivo: ")
 
     #apertura y lectura del contenido del archivo de las instrucciones 
     archivo_mascotas = open(path,"r")
@@ -147,7 +153,7 @@ def mascotas():
                     if mascotas_result != " ":
                         mascotas_result = mascotas_result +  animal.resumen() + "\n" 
                     else:
-                        mascotas_result = mascotas_result +  animal.resumen() + "\n" 
+                        mascotas_result = mascotas_result +  animal.F() + "\n" 
 
             mascotas_result = mascotas_result + "[%s/%s/%s"%(fecha.day,fecha.month,fecha.year) + " %s:%s"%(fecha.hour,fecha.minute)+"] " + "--------------------------------------------------\n"
 
@@ -416,6 +422,14 @@ def calculadora():
     edu_result = " "
     variables = []
 
+    #validando que la extension del archivo sea la correcta
+    while True:
+        nombre,extension = os.path.splitext(path)
+        if extension == ".edu":
+            break
+        else:
+            path = input("\nIngrese la ruta del archivo: ")
+
     #apertura y lectura del contenido del archivo de las instrucciones 
     archivo_edu = open(path,"r")
     contenido = archivo_edu.read()
@@ -611,6 +625,14 @@ def almacenCaracteres():
     """ readlines() lee linea por linea pero agrega un salto de linea al final de cada
         lectura """
     
+    #validando que la extension del archivo sea la correcta
+    while True:
+        titulo,extension = os.path.splitext(path)
+        if extension == ".almacen":
+            break
+        else:
+            path = input("\nIngrese la ruta del archivo: ")
+
     #read() lectura del archivo en su totalidad
     contenido = archivo_almacen.read()
     division = contenido.split("\n")

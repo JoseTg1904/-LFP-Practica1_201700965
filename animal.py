@@ -17,6 +17,3 @@ class Animal():
             self.estado = False
         else:
             self.estado = True
-
-    def comer(self):
-        pass
