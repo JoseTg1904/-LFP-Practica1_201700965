@@ -10,13 +10,9 @@ from pajaro import Pajaro
 from lista import Lista
 from pila import Pila
 
-#declaracion de arreglos para el almacenamiento de los valores
-gatos = []
-pajaros = []
-palabras = []
-
 #declaracion de variables contenedoras del archivo de salida
 edu_result = " "
+cadena = []
 
 #declaracion de las estructuras de datos
 lista = Lista()
@@ -84,7 +80,6 @@ def mascotas():
                         else:
                             mascotas_result = animal.validarMensaje( int(ar1[1]) , int(ar1[2])) + "\n" 
         elif instruccion[0] == "Enviar_Mensaje":
-            print 
             ar1 = instruccion[1].split(",")
             nick = ar1[0].strip('"')
             for animal in mascotas:
@@ -174,21 +169,22 @@ def menuPrincipal():
     print("|                         |")
     print("---------------------------")
     print(" ")
+     
     while True:
-        lectura = int(input('Presione el numero de la accion a realizar: '))
-        #lectura = int(lectura)
-    #    if type(lectura) == int:
-        if lectura == 1:
-            menuEntretenimiento()
-        elif lectura == 2:
-            menuEducacion()
-        elif lectura == 0:
-            print("Hasta la proxima c:")
-            exit(0)
+        lectura = input('Presione el numero de la accion a realizar: ')
+        if lectura.isdigit() == True:
+            lectura = int(lectura)
+            if lectura == 1:
+                menuEntretenimiento()
+            elif lectura == 2:
+                menuEducacion()
+            elif lectura == 0:
+                print("Hasta la proxima c:")
+                exit(0)
+            else:
+                print("\nIngrese una opcion valida\n")
         else:
             print("\nIngrese una opcion valida \n")
-     #   else: 
-      #      print("ingrese unicamente numeros")
 
 def menuEntretenimiento():
     os.system("cls")
@@ -202,13 +198,404 @@ def menuEntretenimiento():
     print(" ")
     while True:
         lectura = input('Presione el numero de la accion a realizar: ')
-        lectura = int(lectura)
-        if lectura == 1:
-            mascotas()
-        elif lectura == 0:
-            menuPrincipal()
+        if lectura.isdigit() == True:
+            lectura = int(lectura)
+            if lectura == 1:
+                mascotas()
+            elif lectura == 0:
+                menuPrincipal()
+            else:
+                print("\nIngrese una opcion valida \n")
         else:
             print("\nIngrese una opcion valida \n")
+
+def traduccion(expresion):
+
+    #arreglo para la traduccion y una pila para el almacenamiento de los operadores
+    postfija = []
+    pilaAux = []
+
+    #recorrido de la expresion infija
+    for it in range(0,len(expresion)):
+        #si viene un numero en la expresion meterlo al arreglo de la traduccion
+        if expresion[it].isdigit() == True:
+            postfija.append(expresion[it])
+        #si viene un operador meterlo a la pila de operadores
+        else:
+            #si la pila esta vacia insertar el operador
+            if len(pilaAux) == 0:
+                pilaAux.append(expresion[it])
+            else:
+                #si la pila no esta vacia, verificar cada caso para los operadores posibles
+                if expresion[it] == "*":
+                    #recorrer la pila de operadores
+                    for ite in range(0,(len(pilaAux))):
+
+                        #obtener el ultimo valor de la pila
+                        aux1 = pilaAux[len(pilaAux)-1]
+                        #si la pila esta vacia insertar el valor
+                        if len(pilaAux) == 0:
+                            pilaAux.append(expresion[it])
+                        else:
+                            """
+                            si la prioridad del operador en la infija es mayor que la prioridad en la pila
+                            se inserta en la pila, si la prioridad es menor se saca el valor del tope y se sigue 
+                            preguntado hasta que la pila este vacia
+                            
+                            Operador|Prioridad infija|Prioridad en la pila
+                                ^   |       4        |         3
+                               *,/  |       2        |         2
+                               +,-  |       1        |         1
+                                (   |       5        |         0
+                                )   |       NA       |         NA
+                            """
+                            if aux1 == "*":
+                                """
+                                como la prioridad es igual se saca de la pila de 
+                                operadores y se agrega a la notacion postfija
+                                """
+                                postfija.append(pilaAux.pop())
+                                #se verifica si la pila esta vacia para ingresar el operador que viene
+                                if len(pilaAux) == 0:
+                                    pilaAux.append(expresion[it])
+                            elif aux1 == "/":
+                                postfija.append(pilaAux.pop())   
+                                if len(pilaAux) == 0:
+                                    pilaAux.append(expresion[it])                                  
+                            #como la prioridad es mayor solo se agrega a la pila de operadores   
+                            elif aux1 == "+":
+                                pilaAux.append(expresion[it])
+                            elif aux1 == "-":
+                                pilaAux.append(expresion[it])
+                            elif aux1 == "(":
+                                pilaAux.append(expresion[it])
+                elif expresion[it] == "/":
+                    for ite in range(0,(len(pilaAux))):
+                        aux1 = pilaAux[len(pilaAux)-1]
+                        if len(pilaAux) == 0:
+                            pilaAux.append(expresion[it])
+                        else:
+                            """
+                            si la prioridad del operador en la infija es mayor que la prioridad en la pila
+                            se inserta en la pila, si la prioridad es menor se saca el valor del tope y se sigue 
+                            preguntado hasta que la pila este vacia
+                            """
+                            if aux1 == "*":
+                                postfija.append(pilaAux.pop())
+                                if len(pilaAux) == 0:
+                                    pilaAux.append(expresion[it])
+                            elif aux1 == "/":
+                                postfija.append(pilaAux.pop())   
+                                if len(pilaAux) == 0:
+                                    pilaAux.append(expresion[it])                                     
+                            elif aux1 == "+":
+                                pilaAux.append(expresion[it])
+                            elif aux1 == "-":
+                                pilaAux.append(expresion[it])
+                            elif aux1 == "(":
+                                pilaAux.append(expresion[it])
+                elif expresion[it] == "+":
+                    for ite in range(0,(len(pilaAux))):
+                        aux1 = pilaAux[len(pilaAux)-1]
+                        if len(pilaAux) == 0:
+                            pilaAux.append(expresion[it])
+                        else:
+                            """
+                            si la prioridad del operador en la infija es mayor que la prioridad en la pila
+                            se inserta en la pila, si la prioridad es menor se saca el valor del tope y se sigue 
+                            preguntado hasta que la pila este vacia
+                            """
+                            if aux1 == "*":
+                                postfija.append(pilaAux.pop())
+                                if len(pilaAux) == 0:
+                                    pilaAux.append(expresion[it])
+                            elif aux1 == "/":
+                                postfija.append(pilaAux.pop())   
+                                if len(pilaAux) == 0:
+                                    pilaAux.append(expresion[it])                                     
+                            elif aux1 == "+":
+                                postfija.append(pilaAux.pop())   
+                                if len(pilaAux) == 0:
+                                    pilaAux.append(expresion[it])
+                            elif aux1 == "-":
+                                postfija.append(pilaAux.pop())   
+                                if len(pilaAux) == 0:
+                                    pilaAux.append(expresion[it])
+                            elif aux1 == "(":
+                                pilaAux.append(expresion[it])
+                elif expresion[it] == "-":
+                    for ite in range(0,(len(pilaAux))):
+                        aux1 = pilaAux[len(pilaAux)-1]
+                        if len(pilaAux) == 0:
+                            pilaAux.append(expresion[it])
+                        else:
+                            """
+                            si la prioridad del operador en la infija es mayor que la prioridad en la pila
+                            se inserta en la pila, si la prioridad es menor se saca el valor del tope y se sigue 
+                            preguntado hasta que la pila este vacia
+                            """
+                            if aux1 == "*":
+                                postfija.append(pilaAux.pop())
+                                if len(pilaAux) == 0:
+                                    pilaAux.append(expresion[it])
+                            elif aux1 == "/":
+                                postfija.append(pilaAux.pop())   
+                                if len(pilaAux) == 0:
+                                    pilaAux.append(expresion[it])                                     
+                            elif aux1 == "+":
+                                postfija.append(pilaAux.pop())   
+                                if len(pilaAux) == 0:
+                                    pilaAux.append(expresion[it])
+                            elif aux1 == "-":
+                                postfija.append(pilaAux.pop())   
+                                if len(pilaAux) == 0:
+                                    pilaAux.append(expresion[it])
+                            elif aux1 == "(":
+                                pilaAux.append(expresion[it])
+                elif expresion[it] == "(":
+                    #al ser siempre la prioridad mayor solo se agrega
+                    pilaAux.append(expresion[it])
+                elif expresion[it] == ")":
+                    #se recorre la pila hasta que encuentre el parentesis de apertura
+                    while True:
+                        valor = pilaAux.pop()
+                        """
+                        se verifica el valor que se extrajo de la pila si es el de 
+                        apertura se termina de recorrer    
+                        """
+                        if valor == "(":
+                            break
+                        #luego de verificar el valor extraido se agrega al postfijo
+                        postfija.append(valor)
+
+    #se recorre la pila por si quedo algun operador dentro de el y se agrega al postfijo                    
+    while len(pilaAux) != 0:
+        postfija.append(pilaAux.pop())
+
+    #regreso del arreglo en notacion postfija
+    return postfija
+    
+def calculo(expresion):
+    #pila para el calculo de la expresion
+    operacion = []
+    
+    #recorrido del arreglo de la expresion postfija
+    for valor in expresion:
+        #si viene un digito que lo agregue a la pila del calculo
+        if valor.isdigit() == True:
+            operacion.append(valor)
+        else:
+            #si viene un operador que saque los dos numeros anteriores
+            segundo = float(operacion.pop()) 
+            primero = float(operacion.pop())
+            """
+            dependiendo del tipo de ooperador realizar la operacion 
+            y regresar el resultado a la pila
+            """
+            if valor == "+":
+                resultado = primero + segundo
+                operacion.append(resultado)
+            elif valor == "-":
+                resultado = primero - segundo
+                operacion.append(resultado)
+            elif valor == "/":
+                resultado = primero / segundo
+                operacion.append(resultado)
+            elif valor == "*":
+                resultado = primero * segundo
+                operacion.append(resultado)
+
+    #regreso del valor de la operacion
+    return int(operacion.pop())
+
+def calculadora():
+    #guardado de la ruta del archivo 
+    path = input("\nIngrese la ruta del archivo: ")
+
+    #vaciado del arreglo de variables y el contenido del archivo de salida
+    edu_result = " "
+    variables = []
+
+    #apertura y lectura del contenido del archivo de las instrucciones 
+    archivo_edu = open(path,"r")
+    contenido = archivo_edu.read()
+
+    #division del archivo en lineas
+    division = contenido.split("\n")
+
+    #recorrido de las lineas del archivo
+    for linea in division:
+        #division del archivo en tipo de instruccion(0) y contenido(1) 
+        instruccion = linea.split(":")
+        fecha = datetime.datetime.now()
+
+        if instruccion[0] == "Variable":
+            #separacion de los parametros de la instruccion
+            valor = instruccion[1].split(",")
+            
+            #traduccion y calculo del resultado de la operacion      
+            resultado = calculo(traduccion(valor[1].split(" ")))
+
+            #cracion de una nueva cadena para alamacenaje y guardado en el arreglo
+            cadena = valor[0]+","+str(resultado)
+            variables.append(cadena)
+
+        elif instruccion[0] == "Postfija":
+            #traduccion de infijo a postfijo
+            postfijo = traduccion(instruccion[1].split(" "))
+            
+            #paso de un arreglo a un string
+            cadena = " "
+            for elemento in postfijo:
+                cadena = cadena + elemento + " "
+
+            if edu_result != " ":
+                edu_result = edu_result + "[%s/%s/%s"%(fecha.day,fecha.month,fecha.year) + " %s:%s"%(fecha.hour,fecha.minute)+"] Postfijo: " + cadena +"\n"
+            else:
+                edu_result = "[%s/%s/%s"%(fecha.day,fecha.month,fecha.year) + " %s:%s"%(fecha.hour,fecha.minute)+"] Postfijo: " + cadena +"\n"
+        
+        elif instruccion[0] == "Incrementar":
+            #creacion de una variable para el guardar el resultado
+            resultado = 0
+
+            #recorrido del arreglo de variables
+            for valor in variables:
+                #separacion de los elementos del arreglo por ","
+                cadena = valor.split(",")
+
+                #si se encuentra coincidencia con los nombres de las variables traducir y calcular el nuevo valor
+                if cadena[0] == instruccion[1]:
+                    resultado = calculo(traduccion([cadena[1],'+','1']))
+
+            #reemplazar el nuevo valor en el arreglo de variables
+            for it in range(0,len(variables)):
+                cadena = variables[it].split(",")
+                if cadena[0] == instruccion[1]:
+                    variables[it] = str(cadena[0]) + "," + str(resultado)
+            
+        elif instruccion[0] == "Mitad":
+            #creacion de una variable para el guardar el resultado
+            resultado = 0
+
+            #recorrido del arreglo de variables
+            for valor in variables:
+                #separacion de los elementos del arreglo por ","
+                cadena = valor.split(",")
+
+                #si se encuentra coincidencia con los nombres de las variables traducir y calcular el nuevo valor
+                if cadena[0] == instruccion[1]:
+                    resultado = calculo(traduccion([cadena[1],'/','2']))
+
+            #reemplazar el nuevo valor en el arreglo de variables
+            for it in range(0,len(variables)):
+                cadena = variables[it].split(",")
+                if cadena[0] == instruccion[1]:
+                    variables[it] = str(cadena[0]) + "," + str(resultado)
+
+        elif instruccion[0] == "Triple":
+            #creacion de una variable para el guardar el resultado
+            resultado = 0
+
+            #recorrido del arreglo de variables
+            for valor in variables:
+                #separacion de los elementos del arreglo por ","
+                cadena = valor.split(",")
+
+                #si se encuentra coincidencia con los nombres de las variables traducir y calcular el nuevo valor
+                if cadena[0] == instruccion[1]:
+                    resultado = calculo(traduccion([cadena[1],'*','3']))
+
+            #reemplazar el nuevo valor en el arreglo de variables
+            for it in range(0,len(variables)):
+                cadena = variables[it].split(",")
+                if cadena[0] == instruccion[1]:
+                    variables[it] = str(cadena[0]) + "," + str(resultado)
+        
+        elif instruccion[0] == "Positivo":
+            #creacion de una variable para el guardar el resultado
+            resultado = 0
+
+            #recorrido del arreglo de variables
+            for valor in variables:
+                #separacion de los elementos del arreglo por ","
+                cadena = valor.split(",")
+
+                #si se encuentra coincidencia con los nombres de las variables obtener el valor absoluto
+                if cadena[0] == instruccion[1]:
+                    resultado = abs(int(cadena[1]))
+
+            #reemplazar el nuevo valor en el arreglo de variables
+            for it in range(0,len(variables)):
+                cadena = variables[it].split(",")
+                if cadena[0] == instruccion[1]:
+                    variables[it] = str(cadena[0]) + "," + str(resultado)
+
+        elif instruccion[0] == "Negativo":
+            #creacion de una variable para el guardar el resultado
+            resultado = 0
+
+            #recorrido del arreglo de variables
+            for valor in variables:
+                #separacion de los elementos del arreglo por ","
+                cadena = valor.split(",")
+
+                #si se encuentra coincidencia con los nombres de las variables obtener el valor negativo
+                if cadena[0] == instruccion[1]:
+                    resultado = abs(int(cadena[1])) * -1
+
+            #reemplazar el nuevo valor en el arreglo de variables
+            for it in range(0,len(variables)):
+                cadena = variables[it].split(",")
+                if cadena[0] == instruccion[1]:
+                    variables[it] = str(cadena[0]) + "," + str(resultado)
+        
+        elif instruccion[0] == "Potencia":
+            #separacion de ambas expresiones matematicas
+            expresiones = instruccion[1].split(",")
+
+            #traduccion y calculo de la primer expresion 
+            base = calculo( traduccion(expresiones[0].split(" ") ) )
+
+            #traduccion y calculo de la segunda expresion
+            exponente = calculo( traduccion( expresiones[1].split(" ") ) )
+
+            #arreglo para el calculo de la potencia
+            operacion = []
+
+            #conversion a notacion de potencia en formato postfijo
+            for it in range(0,exponente):
+                operacion.append(str(base)) 
+            for it in range(1,exponente):
+                operacion.append("*")
+
+            if edu_result != " ":
+                edu_result = edu_result + "[%s/%s/%s"%(fecha.day,fecha.month,fecha.year) + " %s:%s"%(fecha.hour,fecha.minute)+"] Potencia: " +  str(calculo(operacion)) +"\n"
+            else:
+                edu_result = "[%s/%s/%s"%(fecha.day,fecha.month,fecha.year) + " %s:%s"%(fecha.hour,fecha.minute)+"] Potencia: " + str(calculo(operacion)) +"\n"
+
+        elif instruccion[0] == "Imprimir":
+            #si los nombres de las variables coinciden imprimir su valor
+            for valor in variables:
+                cadena = valor.split(",")
+                if cadena[0] == instruccion[1]:
+                    if edu_result != " ":
+                        edu_result = edu_result + "[%s/%s/%s"%(fecha.day,fecha.month,fecha.year) + " %s:%s"%(fecha.hour,fecha.minute)+"] " + cadena[0] + " , " +  cadena[1]  +"\n"
+                    else:
+                        edu_result = "[%s/%s/%s"%(fecha.day,fecha.month,fecha.year) + " %s:%s"%(fecha.hour,fecha.minute)+"] " + cadena[0] + " , " +  cadena[1] +"\n"
+
+        elif instruccion[0] == "Imprimir_Mensaje":
+            #obtener el mensaje eliminarle las comillas e imprimirlo
+            if edu_result != " ":
+                edu_result = edu_result + "[%s/%s/%s"%(fecha.day,fecha.month,fecha.year) + " %s:%s"%(fecha.hour,fecha.minute)+"] " + instruccion[1].strip('"') + "\n"
+            else:
+                edu_result = "[%s/%s/%s"%(fecha.day,fecha.month,fecha.year) + " %s:%s"%(fecha.hour,fecha.minute)+"] " + instruccion[1].strip('"') +"\n"
+
+    #creacion e impresion del archivo.edu_result
+    resultado = open("C:/Users/chepe/Desktop/archivo.edu_result","w")
+    resultado.write(edu_result)
+    resultado.close()
+    os.system("C:/Users/chepe/Desktop/archivo.edu_result")
+    menuPrincipal()
 
 def almacenCaracteres():
     path = input("\n Ingrese la ruta del archivo: ")  
@@ -264,7 +651,36 @@ def almacenCaracteres():
             #modificando la siguiente posicion vacia disponible
             lista.cabeza.objeto = lista.tamanyo
         elif instruccion[0] == "Concatenar":
-            pass
+            
+            #solo realiza esta instruccion si hay como minimo dos palabras en el almacen
+            if len(palabras) >= 2:
+
+                #extraccion de las ultimas dos palabras
+                ultima = palabras.pop()
+                penultima = palabras.pop()
+
+                #obtencion del identificador y la palabra
+                ultima = ultima.split(",")
+                penultima = penultima.split(",")
+
+                #concatenacion para la nueva palabra
+                nueva_palabra = penultima[1]+ultima[1]
+
+                #creacion y agregacion de la nueva palabra
+                nuevo_valor = penultima[0]+","+nueva_palabra
+                palabras.append(nuevo_valor)
+
+                #limpieza de la edd "lista" y agregacion del siguiente valor disponible para agregar
+                lista.limpiar()
+                lista.agregar(1)
+
+                #recorrido del arreglo para volver a llenar la lista con los nuevos valores
+                for it in palabras:
+                    valor = it.split(",")
+                    lista.agregar(len(valor[1]))
+                    for caracter in valor[1]:
+                        lista.agregar(caracter)
+                    lista.cabeza.objeto = lista.tamanyo
         elif instruccion[0] == "Posicion_cadena":
             
             #contadores para medir longitud de palabras y cantidad de palabras que se han recorrido
@@ -398,16 +814,17 @@ def menuEducacion():
     print(" ")
     while True:
         lectura = input('Presione el numero de la accion a realizar: ')
-        lectura = int(lectura)
-        if lectura == 1:
-            print("carga del archivo")
-        elif lectura == 2:
-            almacenCaracteres()
-        elif lectura == 0:
-            menuPrincipal()
+        if lectura.isdigit() == True:
+            lectura = int(lectura)
+            if lectura == 1:
+                calculadora()
+            elif lectura == 2:
+                almacenCaracteres()
+            elif lectura == 0:
+                menuPrincipal()
+            else:
+                print("\nIngrese una opcion valida \n")
         else:
             print("\nIngrese una opcion valida \n")
 
 menuPrincipal()
-
-
