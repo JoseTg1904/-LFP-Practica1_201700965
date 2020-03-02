@@ -223,7 +223,10 @@ def traduccion(expresion):
 
     #recorrido de la expresion infija
     for it in range(0,len(expresion)):
-        #si viene un numero en la expresion meterlo al arreglo de la traduccion
+        """
+        Si viene un numero o una variable(letra) agregarlo al agregarlo 
+        al arreglo de la traduccion
+        """
         if expresion[it].isdigit() == True or expresion[it].isalpha() == True:
             postfija.append(expresion[it])
         #si viene un operador meterlo a la pila de operadores
@@ -384,12 +387,12 @@ def traduccion(expresion):
 def calculo(expresion,variables):
     #pila para el calculo de la expresion
     operacion = []
-    print(expresion)
     #recorrido del arreglo de la expresion postfija
     for valor in expresion:
         #si viene un digito que lo agregue a la pila del calculo
         if valor.isdigit() == True:
             operacion.append(valor)
+        #si viene una variable buscar su valor en el arreglo y agregarlo a la pila del calculo
         elif valor.isalpha() == True:
             for var in variables:
                 var = var.split(",")
@@ -462,8 +465,19 @@ def calculadora():
             resultado = calculo(traduccion(infija) ,variables)
 
             #cracion de una nueva cadena para alamacenaje y guardado en el arreglo
+
             cadena = valor[0]+","+str(resultado)
-            variables.append(cadena)
+            validar = True
+            for it in range(0,len(variables)):
+                iden = variables[it].split(",")
+                if valor[0] == iden[0]:
+                    variables[it] = valor[0]+","+str(resultado)
+                    validar = False
+
+            if validar == True:
+                variables.append(cadena)
+            else:
+                pass
 
         elif instruccion[0] == "Postfija":
             #traduccion de infijo a postfijo
