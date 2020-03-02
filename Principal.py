@@ -124,7 +124,7 @@ def mascotas():
                             mascotas_result = mascotas_result + animal.cazarRaton( int(ar1[1]) , int(ar1[2]) , int(ar1[3]) ) + "\n" 
                         else:
                             mascotas_result = animal.cazarRaton( int(ar1[1]) , int(ar1[2]) , int(ar1[3]) ) + "\n" 
-        elif instruccion[0] == "Dar_De_Comer":
+        elif instruccion[0] == "Dar_de_Comer":
             ar1 = instruccion[1].split(",")
             nick = ar1[0].strip('"')
             for animal in mascotas:
@@ -224,7 +224,7 @@ def traduccion(expresion):
     #recorrido de la expresion infija
     for it in range(0,len(expresion)):
         #si viene un numero en la expresion meterlo al arreglo de la traduccion
-        if expresion[it].isdigit() == True:
+        if expresion[it].isdigit() == True or expresion[it].isalpha() == True:
             postfija.append(expresion[it])
         #si viene un operador meterlo a la pila de operadores
         else:
@@ -381,15 +381,20 @@ def traduccion(expresion):
     #regreso del arreglo en notacion postfija
     return postfija
     
-def calculo(expresion):
+def calculo(expresion,variables):
     #pila para el calculo de la expresion
     operacion = []
-    
+    print(expresion)
     #recorrido del arreglo de la expresion postfija
     for valor in expresion:
         #si viene un digito que lo agregue a la pila del calculo
         if valor.isdigit() == True:
             operacion.append(valor)
+        elif valor.isalpha() == True:
+            for var in variables:
+                var = var.split(",")
+                if valor == var[0]:
+                    operacion.append(var[1])
         else:
             #si viene un operador que saque los dos numeros anteriores
             segundo = float(operacion.pop()) 
@@ -412,7 +417,7 @@ def calculo(expresion):
                 operacion.append(resultado)
 
     #regreso del valor de la operacion
-    return int(operacion.pop())
+    return round(float( operacion.pop() ) )
 
 def calculadora():
     #guardado de la ruta del archivo 
@@ -447,8 +452,14 @@ def calculadora():
             #separacion de los parametros de la instruccion
             valor = instruccion[1].split(",")
             
-            #traduccion y calculo del resultado de la operacion      
-            resultado = calculo(traduccion(valor[1].split(" ")))
+            #traduccion y calculo del resultado de la operacion 
+            infija = []
+            print(valor[1].split(" "))
+            for it in valor[1].split(" "):
+                if it != "":
+                    infija.append(it)
+
+            resultado = calculo(traduccion(infija) ,variables)
 
             #cracion de una nueva cadena para alamacenaje y guardado en el arreglo
             cadena = valor[0]+","+str(resultado)
@@ -456,8 +467,14 @@ def calculadora():
 
         elif instruccion[0] == "Postfija":
             #traduccion de infijo a postfijo
-            postfijo = traduccion(instruccion[1].split(" "))
-            
+            infija = []
+            for it in instruccion[1].split(" "):
+                if it != "":
+                    infija.append(it)
+
+            postfijo = traduccion(infija)
+            print(postfijo)            
+
             #paso de un arreglo a un string
             cadena = " "
             for elemento in postfijo:
@@ -479,7 +496,7 @@ def calculadora():
 
                 #si se encuentra coincidencia con los nombres de las variables traducir y calcular el nuevo valor
                 if cadena[0] == instruccion[1]:
-                    resultado = calculo(traduccion([cadena[1],'+','1']))
+                    resultado = calculo(traduccion([cadena[1],'+','1']),variables)
 
             #reemplazar el nuevo valor en el arreglo de variables
             for it in range(0,len(variables)):
@@ -498,7 +515,7 @@ def calculadora():
 
                 #si se encuentra coincidencia con los nombres de las variables traducir y calcular el nuevo valor
                 if cadena[0] == instruccion[1]:
-                    resultado = calculo(traduccion([cadena[1],'/','2']))
+                    resultado = calculo(traduccion([cadena[1],'/','2']),variables)
 
             #reemplazar el nuevo valor en el arreglo de variables
             for it in range(0,len(variables)):
@@ -517,7 +534,7 @@ def calculadora():
 
                 #si se encuentra coincidencia con los nombres de las variables traducir y calcular el nuevo valor
                 if cadena[0] == instruccion[1]:
-                    resultado = calculo(traduccion([cadena[1],'*','3']))
+                    resultado = calculo(traduccion([cadena[1],'*','3']),variables)
 
             #reemplazar el nuevo valor en el arreglo de variables
             for it in range(0,len(variables)):
@@ -568,10 +585,22 @@ def calculadora():
             expresiones = instruccion[1].split(",")
 
             #traduccion y calculo de la primer expresion 
-            base = calculo( traduccion(expresiones[0].split(" ") ) )
+
+            infija = []
+            for it in expresiones[0].split(" "):
+                if it != "":
+                    infija.append(it)
+
+            base = calculo( traduccion( infija ),variables )
 
             #traduccion y calculo de la segunda expresion
-            exponente = calculo( traduccion( expresiones[1].split(" ") ) )
+
+            infija = []
+            for it in expresiones[1].split(" "):
+                if it != "":
+                    infija.append(it)
+
+            exponente = calculo( traduccion( infija ),variables )
 
             #arreglo para el calculo de la potencia
             operacion = []
@@ -583,9 +612,9 @@ def calculadora():
                 operacion.append("*")
 
             if edu_result != " ":
-                edu_result = edu_result + "[%s/%s/%s"%(fecha.day,fecha.month,fecha.year) + " %s:%s"%(fecha.hour,fecha.minute)+"] Potencia: " +  str(calculo(operacion)) +"\n"
+                edu_result = edu_result + "[%s/%s/%s"%(fecha.day,fecha.month,fecha.year) + " %s:%s"%(fecha.hour,fecha.minute)+"] Potencia: " +  str(calculo(operacion,variables)) +"\n"
             else:
-                edu_result = "[%s/%s/%s"%(fecha.day,fecha.month,fecha.year) + " %s:%s"%(fecha.hour,fecha.minute)+"] Potencia: " + str(calculo(operacion)) +"\n"
+                edu_result = "[%s/%s/%s"%(fecha.day,fecha.month,fecha.year) + " %s:%s"%(fecha.hour,fecha.minute)+"] Potencia: " + str(calculo(operacion,variables)) +"\n"
 
         elif instruccion[0] == "Imprimir":
             #si los nombres de las variables coinciden imprimir su valor
@@ -680,6 +709,9 @@ def almacenCaracteres():
                 #extraccion de las ultimas dos palabras
                 ultima = palabras.pop()
                 penultima = palabras.pop()
+                palabras.append(ultima)
+                palabras.append(penultima)
+
 
                 #obtencion del identificador y la palabra
                 ultima = ultima.split(",")
@@ -688,21 +720,21 @@ def almacenCaracteres():
                 #concatenacion para la nueva palabra
                 nueva_palabra = penultima[1]+ultima[1]
 
+
                 #creacion y agregacion de la nueva palabra
                 nuevo_valor = penultima[0]+","+nueva_palabra
                 palabras.append(nuevo_valor)
 
-                #limpieza de la edd "lista" y agregacion del siguiente valor disponible para agregar
-                lista.limpiar()
-                lista.agregar(1)
+                lista.agregar(len(nueva_palabra))
+            
+                #recorriendo la palabra para agregar los caracteres de la misma a la lista
+                for iteracion in nueva_palabra:
+                    if iteracion != '"':
+                        lista.agregar(iteracion)
+            
+                #modificando la siguiente posicion vacia disponible
+                lista.cabeza.objeto = lista.tamanyo
 
-                #recorrido del arreglo para volver a llenar la lista con los nuevos valores
-                for it in palabras:
-                    valor = it.split(",")
-                    lista.agregar(len(valor[1]))
-                    for caracter in valor[1]:
-                        lista.agregar(caracter)
-                    lista.cabeza.objeto = lista.tamanyo
         elif instruccion[0] == "Posicion_cadena":
             
             #contadores para medir longitud de palabras y cantidad de palabras que se han recorrido
@@ -744,7 +776,7 @@ def almacenCaracteres():
                     else:
                         almacen_result = "[%s/%s/%s"%(fecha.day,fecha.month,fecha.year) + " %s:%s"%(fecha.hour,fecha.minute)+"] " + identificador[0] + ", Tam: " + str(len(identificador[1])) + "\n"
         elif instruccion[0] == "Imprimir":
-             #contadores para medir longitud de palabras y cantidad de palabras que se han recorrido
+            #contadores para medir longitud de palabras y cantidad de palabras que se han recorrido
             contador = 0
             contador_2 = 0
 
@@ -804,9 +836,12 @@ def almacenCaracteres():
             #rutas del .dot y la imagen
             parte1 = instruccion[1].strip('"')
             parte2 = instruccion[2].strip('"')
-            path_dot = parte1 +":"+ parte2 + "//grafo.dot"
+            path_dot = parte1 +":"+ parte2
+            path_dot = os.path.join(path_dot,"//grafo.dot") 
+            path_dot = "C://Users//chepe//Desktop//grafo.dot"
             path_imagen = parte1 +":"+ parte2 + "//grafo.png"
-            
+            path_imagen = "C://Users//chepe//Desktop//grafo.png"
+
             #escritura del .dot
             archivo_dot = open(path_dot,"w")
             archivo_dot.write(dot)
