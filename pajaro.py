@@ -39,6 +39,7 @@ class Pajaro(Animal):
                 self.energia = 0
                 self.posicion_x = x
                 self.posicion_y = y
+                self.verificarEstado()
                 texto = "[%s/%s/%s"%(fecha.day,fecha.month,fecha.year) + " %s:%s"%(fecha.hour,fecha.minute)+"] " + self.nombre + ", Estoy exhausto. Dame de comer " + str(comida_necesaria) + " gramos para ir. \n" + "[%s/%s/%s"%(fecha.day,fecha.month,fecha.year) + " %s:%s"%(fecha.hour,fecha.minute)+"] "+self.nombre+", Ya me mori." 
                 return texto
         else:

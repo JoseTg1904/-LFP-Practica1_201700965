@@ -52,6 +52,7 @@ class Gato(Animal):
             else:
                 gramos_necesarios = self.energiaNecesaria(energia_consumida)
                 self.energia = 0
+                self.verificarEstado()
                 return "[%s/%s/%s"%(fecha.day,fecha.month,fecha.year) + " %s:%s"%(fecha.hour,fecha.minute)+"] "+self.nombre + ", Estoy exhausto. Dame de comer " + str(gramos_necesarios) + " gramos, para ir. \n" + "[%s/%s/%s"%(fecha.day,fecha.month,fecha.year) + " %s:%s"%(fecha.hour,fecha.minute)+"] "+self.nombre + ", Ya me mori."
         else:
             return "[%s/%s/%s"%(fecha.day,fecha.month,fecha.year) + " %s:%s"%(fecha.hour,fecha.minute)+"] "+self.nombre + ", Ya me mori."

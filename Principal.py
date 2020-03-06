@@ -175,7 +175,6 @@ def menuPrincipal():
     print("|                         |")
     print("---------------------------")
     print(" ")
-     
     while True:
         lectura = input('Presione el numero de la accion a realizar: ')
         if lectura.isdigit() == True:
@@ -236,10 +235,9 @@ def traduccion(expresion):
                 pilaAux.append(expresion[it])
             else:
                 #si la pila no esta vacia, verificar cada caso para los operadores posibles
-                if expresion[it] == "*":
+                if expresion[it] == "*" or expresion[it] == "/":
                     #recorrer la pila de operadores
                     for ite in range(0,(len(pilaAux))):
-
                         #obtener el ultimo valor de la pila
                         aux1 = pilaAux[len(pilaAux)-1]
                         #si la pila esta vacia insertar el valor
@@ -253,12 +251,12 @@ def traduccion(expresion):
                             
                             Operador|Prioridad infija|Prioridad en la pila
                                 ^   |       4        |         3
-                               *,/  |       2        |         2
-                               +,-  |       1        |         1
+                                *,/  |       2        |         2
+                                +,-  |       1        |         1
                                 (   |       5        |         0
                                 )   |       NA       |         NA
                             """
-                            if aux1 == "*":
+                            if aux1 == "*" or aux1 == "/":
                                 """
                                 como la prioridad es igual se saca de la pila de 
                                 operadores y se agrega a la notacion postfija
@@ -267,18 +265,14 @@ def traduccion(expresion):
                                 #se verifica si la pila esta vacia para ingresar el operador que viene
                                 if len(pilaAux) == 0:
                                     pilaAux.append(expresion[it])
-                            elif aux1 == "/":
-                                postfija.append(pilaAux.pop())   
-                                if len(pilaAux) == 0:
-                                    pilaAux.append(expresion[it])                                  
                             #como la prioridad es mayor solo se agrega a la pila de operadores   
-                            elif aux1 == "+":
+                            elif aux1 == "+" or aux1 == "-":
                                 pilaAux.append(expresion[it])
-                            elif aux1 == "-":
-                                pilaAux.append(expresion[it])
+                                break
                             elif aux1 == "(":
                                 pilaAux.append(expresion[it])
-                elif expresion[it] == "/":
+                                break
+                elif expresion[it] == "+" or expresion[it] == "-":
                     for ite in range(0,(len(pilaAux))):
                         aux1 = pilaAux[len(pilaAux)-1]
                         if len(pilaAux) == 0:
@@ -289,78 +283,13 @@ def traduccion(expresion):
                             se inserta en la pila, si la prioridad es menor se saca el valor del tope y se sigue 
                             preguntado hasta que la pila este vacia
                             """
-                            if aux1 == "*":
+                            if aux1 == "*" or aux1 == "/" or aux1 == "+" or aux1 == "-":
                                 postfija.append(pilaAux.pop())
-                                if len(pilaAux) == 0:
-                                    pilaAux.append(expresion[it])
-                            elif aux1 == "/":
-                                postfija.append(pilaAux.pop())   
-                                if len(pilaAux) == 0:
-                                    pilaAux.append(expresion[it])                                     
-                            elif aux1 == "+":
-                                pilaAux.append(expresion[it])
-                            elif aux1 == "-":
-                                pilaAux.append(expresion[it])
-                            elif aux1 == "(":
-                                pilaAux.append(expresion[it])
-                elif expresion[it] == "+":
-                    for ite in range(0,(len(pilaAux))):
-                        aux1 = pilaAux[len(pilaAux)-1]
-                        if len(pilaAux) == 0:
-                            pilaAux.append(expresion[it])
-                        else:
-                            """
-                            si la prioridad del operador en la infija es mayor que la prioridad en la pila
-                            se inserta en la pila, si la prioridad es menor se saca el valor del tope y se sigue 
-                            preguntado hasta que la pila este vacia
-                            """
-                            if aux1 == "*":
-                                postfija.append(pilaAux.pop())
-                                if len(pilaAux) == 0:
-                                    pilaAux.append(expresion[it])
-                            elif aux1 == "/":
-                                postfija.append(pilaAux.pop())   
-                                if len(pilaAux) == 0:
-                                    pilaAux.append(expresion[it])                                     
-                            elif aux1 == "+":
-                                postfija.append(pilaAux.pop())   
-                                if len(pilaAux) == 0:
-                                    pilaAux.append(expresion[it])
-                            elif aux1 == "-":
-                                postfija.append(pilaAux.pop())   
                                 if len(pilaAux) == 0:
                                     pilaAux.append(expresion[it])
                             elif aux1 == "(":
                                 pilaAux.append(expresion[it])
-                elif expresion[it] == "-":
-                    for ite in range(0,(len(pilaAux))):
-                        aux1 = pilaAux[len(pilaAux)-1]
-                        if len(pilaAux) == 0:
-                            pilaAux.append(expresion[it])
-                        else:
-                            """
-                            si la prioridad del operador en la infija es mayor que la prioridad en la pila
-                            se inserta en la pila, si la prioridad es menor se saca el valor del tope y se sigue 
-                            preguntado hasta que la pila este vacia
-                            """
-                            if aux1 == "*":
-                                postfija.append(pilaAux.pop())
-                                if len(pilaAux) == 0:
-                                    pilaAux.append(expresion[it])
-                            elif aux1 == "/":
-                                postfija.append(pilaAux.pop())   
-                                if len(pilaAux) == 0:
-                                    pilaAux.append(expresion[it])                                     
-                            elif aux1 == "+":
-                                postfija.append(pilaAux.pop())   
-                                if len(pilaAux) == 0:
-                                    pilaAux.append(expresion[it])
-                            elif aux1 == "-":
-                                postfija.append(pilaAux.pop())   
-                                if len(pilaAux) == 0:
-                                    pilaAux.append(expresion[it])
-                            elif aux1 == "(":
-                                pilaAux.append(expresion[it])
+                                break
                 elif expresion[it] == "(":
                     #al ser siempre la prioridad mayor solo se agrega
                     pilaAux.append(expresion[it])
@@ -748,7 +677,6 @@ def almacenCaracteres():
             
                 #modificando la siguiente posicion vacia disponible
                 lista.cabeza.objeto = lista.tamanyo
-
         elif instruccion[0] == "Posicion_cadena":
             
             #contadores para medir longitud de palabras y cantidad de palabras que se han recorrido
